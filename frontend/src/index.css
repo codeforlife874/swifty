@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme {
+  --color-logistics-dark: #0a0a0c;
+  --color-logistics-card: #15151a;
+  --color-logistics-accent: #00e5ff;
+  --color-logistics-express: #ff3366;
+  --color-logistics-standard: #00d2ff;
+  --color-logistics-text: #e0e0e0;
+}
+
+@layer base {
+  body {
+    @apply bg-logistics-dark text-logistics-text min-h-screen font-sans;
+    background-image: 
+      radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.05) 0%, transparent 50%),
+      linear-gradient(to bottom, #0a0a0c 0%, #050505 100%);
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-logistics-card/80 backdrop-blur-md border border-white/5 rounded-xl p-6 shadow-2xl;
+  }
+  
+  .glow-text {
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+  }
+
+  .glow-text-express {
+    text-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
+  }
+  
+  .btn-primary {
+    @apply px-6 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold transition-all hover:shadow-[0_0_20px_rgba(0,229,255,0.4)] hover:scale-105 active:scale-95;
+  }
+  
+  .btn-secondary {
+    @apply px-6 py-3 rounded-lg bg-white/5 border border-white/10 text-white font-semibold transition-all hover:bg-white/10 hover:scale-105 active:scale-95;
+  }
+}
