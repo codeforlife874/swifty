@@ -3,9 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ShoppingCart, Package, Clock, Truck, CheckCircle2, ChevronRight, History } from 'lucide-react'
 
 const DELIVERY_OPTIONS = [
-  { id: '15 mins delivery', name: '15 Mins Fast Track', price: 15.00, color: 'text-red-400', bg: 'bg-red-400/20' },
-  { id: '60 mins delivery', name: '60 Mins Express', price: 8.00, color: 'text-orange-400', bg: 'bg-orange-400/20' },
-  { id: '1 day delivery', name: '1 Day Priority', price: 4.00, color: 'text-blue-400', bg: 'bg-blue-400/20' },
+  { id: '15 mins delivery', name: '15 Mins Fast Track', price: 1200.00, color: 'text-red-400', bg: 'bg-red-400/20' },
+  { id: '60 mins delivery', name: '60 Mins Express', price: 600.00, color: 'text-orange-400', bg: 'bg-orange-400/20' },
+  { id: '1 day delivery', name: '1 Day Priority', price: 200.00, color: 'text-blue-400', bg: 'bg-blue-400/20' },
   { id: 'Standard delivery', name: 'Standard (3-5 Days)', price: 0.00, color: 'text-gray-400', bg: 'bg-white/10' }
 ]
 
@@ -136,7 +136,7 @@ export default function CustomerPanel({ currentUser }) {
               </div>
               <div className="p-4 flex-1 flex flex-col">
                 <h3 className="text-lg font-semibold text-white mb-1 leading-tight">{product.name}</h3>
-                <div className="text-sm font-mono text-logistics-accent mb-4">${product.price.toFixed(2)}</div>
+                <div className="text-sm font-mono text-logistics-accent mb-4">₹{product.price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                 <div className="mt-auto flex justify-between items-center text-xs text-gray-400 border-t border-white/5 pt-3">
                   <span>{product.weight} kg</span>
                   <span className="flex items-center">Order <ChevronRight className="w-3 h-3 ml-1" /></span>
@@ -171,7 +171,7 @@ export default function CustomerPanel({ currentUser }) {
                         <img src={selectedProduct.image_url} alt={selectedProduct.name} className="w-12 h-12 rounded-lg object-cover" />
                         <div>
                           <div className="font-semibold text-white">{selectedProduct.name}</div>
-                          <div className="text-sm text-logistics-accent font-mono">${selectedProduct.price.toFixed(2)}</div>
+                          <div className="text-sm text-logistics-accent font-mono">₹{selectedProduct.price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                         </div>
                       </div>
 
@@ -190,7 +190,7 @@ export default function CustomerPanel({ currentUser }) {
                               <span className="font-medium text-gray-200">{opt.name}</span>
                             </div>
                             {opt.price > 0 ? (
-                              <span className="font-mono text-sm text-logistics-accent">+${opt.price.toFixed(2)}</span>
+                              <span className="font-mono text-sm text-logistics-accent">+₹{opt.price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                             ) : (
                               <span className="font-mono text-sm text-gray-400">FREE</span>
                             )}

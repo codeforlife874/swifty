@@ -50,7 +50,7 @@ export default function AuthPage({ onLogin }) {
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-logistics-accent to-blue-500"></div>
         
         <div className="flex flex-col items-center mb-8">
-          <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mb-4 border border-white/10">
+          <div className="w-16 h-16 bg-white/5 rounded-sm flex items-center justify-center mb-4 border border-white/10">
             {isLogin ? <Lock className="w-8 h-8 text-logistics-accent" /> : <User className="w-8 h-8 text-logistics-express" />}
           </div>
           <h2 className="text-3xl font-bold text-white tracking-tight">
@@ -62,7 +62,7 @@ export default function AuthPage({ onLogin }) {
         </div>
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-3 rounded-lg text-sm mb-6 text-center">
+          <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-3 rounded-sm text-sm mb-6 text-center">
             {error}
           </div>
         )}
@@ -75,7 +75,7 @@ export default function AuthPage({ onLogin }) {
               required
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full bg-black/30 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-logistics-accent transition-colors"
+              className="w-full bg-black/30 border border-white/10 rounded-sm px-4 py-3 text-white outline-none focus:border-logistics-accent transition-colors"
               placeholder="e.g. admin or john_doe"
             />
           </div>
@@ -87,7 +87,7 @@ export default function AuthPage({ onLogin }) {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-black/30 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-logistics-accent transition-colors"
+              className="w-full bg-black/30 border border-white/10 rounded-sm px-4 py-3 text-white outline-none focus:border-logistics-accent transition-colors"
               placeholder="••••••••"
             />
           </div>
@@ -95,7 +95,7 @@ export default function AuthPage({ onLogin }) {
           <button 
             type="submit" 
             disabled={loading}
-            className={`w-full py-3 rounded-lg font-bold flex justify-center items-center gap-2 transition-all mt-4
+            className={`w-full py-3 rounded-sm font-bold flex justify-center items-center gap-2 transition-all mt-4
               ${isLogin ? 'bg-logistics-accent text-logistics-dark hover:bg-logistics-accent/90' : 'bg-logistics-express text-white hover:bg-logistics-express/90'}
               ${loading ? 'opacity-70 cursor-not-allowed' : ''}
             `}
