@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Lock, User, ArrowRight, Package } from 'lucide-react'
+import { apiFetch } from '../api'
 
 export default function AuthPage({ onLogin }) {
   const [isLogin, setIsLogin] = useState(true)
@@ -17,7 +18,7 @@ export default function AuthPage({ onLogin }) {
     const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register'
     
     try {
-      const response = await fetch(`http://localhost:5000${endpoint}`, {
+      const response = await apiFetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })

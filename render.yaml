@@ -1,0 +1,19 @@
+services:
+  - type: web_service
+    name: swiftship-backend
+    env: python
+    branch: main
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: python backend/app.py
+    autoDeploy: true
+
+  - type: static_site
+    name: swiftship-frontend
+    env: static
+    branch: main
+    buildCommand: cd frontend && npm install && npm run build
+    publishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://swiftship-backend.onrender.com
+    autoDeploy: true

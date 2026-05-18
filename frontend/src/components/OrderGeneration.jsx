@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, RefreshCw, ArrowRight, Package, Clock, Weight, Hash, Trash2 } from 'lucide-react'
+import { apiFetch } from '../api'
 
 export default function OrderGeneration({ orders, setOrders, onNext }) {
   const [loading, setLoading] = useState(false)
@@ -13,7 +14,7 @@ export default function OrderGeneration({ orders, setOrders, onNext }) {
   const fetchQueue = async () => {
     setLoading(true)
     try {
-      const response = await fetch(`http://localhost:5000/api/orders`)
+      const response = await apiFetch(`/api/orders`)
       const data = await response.json()
       setOrders(data.orders)
     } catch (error) {
@@ -26,7 +27,7 @@ export default function OrderGeneration({ orders, setOrders, onNext }) {
   const generateBulk = async () => {
     setLoading(true)
     try {
-      const response = await fetch(`http://localhost:5000/api/generate-orders?count=${customCount}`, {
+      const response = await apiFetch(`/api/generate-orders?count=${customCount}`, {
         method: 'POST'
       })
       const data = await response.json()
@@ -41,7 +42,7 @@ export default function OrderGeneration({ orders, setOrders, onNext }) {
   const clearQueue = async () => {
     setLoading(true)
     try {
-      await fetch(`http://localhost:5000/api/orders`, { method: 'DELETE' })
+      await apiFetch(`/api/orders`, { method: 'DELETE' })
       setOrders([])
     } catch (error) {
       console.error("Error clearing orders:", error)

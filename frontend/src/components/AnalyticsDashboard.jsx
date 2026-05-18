@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts'
 import { Activity, Lightbulb, TrendingDown, Clock, Zap } from 'lucide-react'
+import { apiFetch } from '../api'
 
 export default function AnalyticsDashboard({ orders }) {
   const [analytics, setAnalytics] = useState(null)
@@ -13,7 +14,7 @@ export default function AnalyticsDashboard({ orders }) {
 
   const fetchAnalytics = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/analytics', {
+      const response = await apiFetch('/api/analytics', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ orders })

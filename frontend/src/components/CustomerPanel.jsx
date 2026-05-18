@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ShoppingCart, Package, Clock, Truck, CheckCircle2, ChevronRight, History } from 'lucide-react'
+import { apiFetch } from '../api'
 
 const DELIVERY_OPTIONS = [
   { id: '15 mins delivery', name: '15 Mins Fast Track', price: 1200.00, color: 'text-red-400', bg: 'bg-red-400/20' },
@@ -30,7 +31,7 @@ export default function CustomerPanel({ currentUser }) {
 
   const fetchCatalog = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/catalog')
+      const res = await apiFetch('/api/catalog')
       const data = await res.json()
       setCatalog(data.catalog)
     } catch (error) {
@@ -43,7 +44,7 @@ export default function CustomerPanel({ currentUser }) {
   const fetchOrderHistory = async () => {
     setHistoryLoading(true)
     try {
-      const res = await fetch(`http://localhost:5000/api/orders?username=${currentUser.username}`)
+      const res = await apiFetch(`/api/orders?username=${currentUser.username}`)
       const data = await res.json()
       setOrderHistory(data.orders)
     } catch (error) {
@@ -56,7 +57,7 @@ export default function CustomerPanel({ currentUser }) {
   const handlePlaceOrder = async (deliveryType) => {
     setOrderStatus('placing')
     try {
-      await fetch('http://localhost:5000/api/orders', {
+      await apiFetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

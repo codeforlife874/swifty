@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Server, Activity, ArrowRight, CheckCircle2 } from 'lucide-react'
+import { apiFetch } from '../api'
 
 export default function SchedulingSimulation({ orders, onNext }) {
   const [activeAlgorithm, setActiveAlgorithm] = useState('FCFS')
@@ -36,7 +37,7 @@ export default function SchedulingSimulation({ orders, onNext }) {
     setResults(null)
     try {
       const endpoint = algo.toLowerCase()
-      const response = await fetch(`http://localhost:5000/api/schedule/${endpoint}`, {
+      const response = await apiFetch(`/api/schedule/${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ orders })

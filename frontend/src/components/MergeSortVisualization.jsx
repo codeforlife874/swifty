@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Play, Pause, SkipForward, RotateCcw, ArrowRight, RefreshCw } from 'lucide-react'
+import { apiFetch } from '../api'
 
 export default function MergeSortVisualization({ orders, setSortedOrders, onNext }) {
   const [frames, setFrames] = useState([])
@@ -34,7 +35,7 @@ export default function MergeSortVisualization({ orders, setSortedOrders, onNext
   const fetchMergeSortData = async () => {
     setLoading(true)
     try {
-      const response = await fetch('http://localhost:5000/api/merge-sort', {
+      const response = await apiFetch('/api/merge-sort', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ orders })
