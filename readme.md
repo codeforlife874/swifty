@@ -91,3 +91,41 @@ npm run dev
 3. **Admin Access:** Log in using username `admin` and password `password` to access the Control Center.
 4. **Customer Access:** Register a new account to access the Shop, place orders with varying priorities, and view your personal order history.
 5. Watch the Admin Control Center process your newly placed customer orders in real-time.
+
+### 4. Explanation
+A breakdown of how scheduling and sorting work, what the metrics mean in this specific context, and the underlying computer science concepts:
+
+### How Sorting and Scheduling Work
+**1. Sorting (Merge Sort):**
+Before orders are sent to the packing stations, the system needs to prioritize them. It uses **Merge Sort** to sort the global order queue. The sorting logic ranks orders based on their Service Level Agreement (SLA) tiers (e.g., "15 mins delivery" vs "Standard delivery") and their packing time efficiency. Merge sort ensures this is done quickly and reliably with an O(n log n) time complexity.
+
+**2. Scheduling (CPU Scheduling Algorithms):**
+Once sorted/queued, the orders are assigned to warehouse packing stations using models inspired by Operating System CPU schedulers:
+*   **FCFS (First Come First Serve):** The packing station processes orders strictly based on their `arrival_time`. It is simple and fair but can cause the "convoy effect," where quick express orders get stuck waiting behind large, slow standard orders.
+*   **SJF (Shortest Job First):** Out of all currently arrived orders, the packing station always picks the one with the shortest `packing_time`. This minimizes the overall average waiting time but risks "starvation" (very large standard orders might never get packed if short express orders keep arriving).
+*   **Hybrid (Multi-Level Queue):** The system mimics a multi-core processor by running two parallel packing stations:
+    *   **Queue 1 (Express Station):** Handles high-priority orders (15 min / 60 min deliveries) using **SJF** to get them out as fast as possible.
+    *   **Queue 2 (Standard Station):** Handles normal priority orders (1 Day / Standard) using **FCFS** to ensure fairness and prevent starvation.
+
+### What the Metrics Depict (Context vs. OS Definition)
+In operating systems, these metrics measure process execution on a CPU. In SwiftShip, they measure warehouse fulfillment efficiency:
+
+*   **Waiting Time (`start_time - arrival_time`):** 
+    *   **Context:** The time an order sits idle in the warehouse queue before a worker actually starts packing it.
+    *   **CS Meaning:** The total time a process spends waiting in the ready queue before getting CPU time.
+*   **Turnaround Time (`end_time - arrival_time`):** 
+    *   **Context:** The total elapsed time from the exact moment a customer clicks "Place Order" to the moment the box is packed and ready to ship.
+    *   **CS Meaning:** The total time taken from the submission of a process to its completion (Wait Time + Execution Time).
+*   **Throughput (`number of orders / total_time`):** 
+    *   **Context:** The packing rate of the warehouse (e.g., how many orders the station can successfully pack per hour/minute). 
+    *   **CS Meaning:** The number of processes completed per time unit.
+
+### The Core CS and Logical Parts
+The application essentially frames a real-world logistics and supply chain problem as a classic Computer Science resource allocation problem:
+*   **Processes (Tasks) =** Customer Orders
+*   **CPU (Processor) =** Warehouse Packing Station
+*   **Burst Time (Execution Time) =** Packing Time
+*   **Arrival Time =** Order Placement Time
+*   **Priority =** Delivery SLA (15 min vs Standard)
+
+By mapping e-commerce fulfillment directly to OS scheduling, it visually proves why advanced OS algorithms (like Multi-Level Queues / Hybrid SJF) are mathematically superior at handling fast-lane priority streams compared to basic chronological (FCFS) processing.
