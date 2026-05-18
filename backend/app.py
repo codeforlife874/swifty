@@ -13,8 +13,38 @@ CORS(app)
 GLOBAL_STATE = {
     "catalog": generate_catalog(20),
     "orders": [],
+    "users": {
+        "admin": {"password": "password", "role": "admin"}
+    },
     "current_time": 0 # Track arrival time baseline
 }
+
+@app.route('/api/auth/register', methods=['POST'])
+def register():
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
+    
+    if not username or not password:
+        return jsonify({"error": "Username and password required"}), 400
+        
+    if username in GLOBAL_STATE["users"]:
+        return jsonify({"error": "User already exists"}), 409
+        
+    GLOBAL_STATE["users"][username] = {"password": password, "role": "customer"}
+    return jsonify({"message": "User registered successfully", "role": "customer", "username": username})
+
+@app.route('/api/auth/login', methods=['POST'])
+def login():
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
+    
+    user = GLOBAL_STATE["users"].get(username)
+    if not user or user["password"] != password:
+        return jsonify({"error": "Invalid credentials"}), 401
+        
+    return jsonify({"message": "Login successful", "role": user["role"], "username": username})
 
 @app.route('/api/catalog', methods=['GET'])
 def get_catalog():
@@ -22,6 +52,10 @@ def get_catalog():
 
 @app.route('/api/orders', methods=['GET'])
 def get_orders():
+    username = request.args.get('username')
+    if username:
+        user_orders = [o for o in GLOBAL_STATE["orders"] if o.get('customer_username') == username]
+        return jsonify({"orders": user_orders})
     return jsonify({"orders": GLOBAL_STATE["orders"]})
 
 @app.route('/api/orders', methods=['POST'])
@@ -29,13 +63,14 @@ def place_order():
     data = request.json
     product_id = data.get('product_id')
     delivery_type = data.get('delivery_type')
+    username = data.get('username')
     
     product = next((p for p in GLOBAL_STATE["catalog"] if p["product_id"] == product_id), None)
     if not product:
         return jsonify({"error": "Product not found"}), 404
         
     GLOBAL_STATE["current_time"] += 1
-    order = create_order_from_product(product, delivery_type, GLOBAL_STATE["current_time"])
+    order = create_order_from_product(product, delivery_type, GLOBAL_STATE["current_time"], username)
     GLOBAL_STATE["orders"].append(order)
     
     return jsonify({"message": "Order placed successfully", "order": order})

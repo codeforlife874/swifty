@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { Package, Cpu, Zap, BarChart3, ArrowRight } from 'lucide-react'
 
-export default function LandingPage({ onSelectPortal }) {
+export default function LandingPage({ onStart }) {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { 
@@ -68,14 +68,8 @@ export default function LandingPage({ onSelectPortal }) {
         </motion.p>
 
         <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button onClick={() => onSelectPortal('customer')} className="btn-primary flex items-center justify-center gap-2 group">
-            <Package className="w-5 h-5" />
-            Customer Portal
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </button>
-          <button onClick={() => onSelectPortal('admin')} className="btn-secondary flex items-center justify-center gap-2 group">
-            <Cpu className="w-5 h-5 text-logistics-accent" />
-            Admin Control Center
+          <button onClick={onStart} className="btn-primary flex items-center justify-center gap-2 group">
+            Get Started
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </button>
         </motion.div>
